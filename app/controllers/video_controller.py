@@ -1,17 +1,21 @@
-from ..models.video import Video
-from ..services.youtube_service import get_video_info
+from flask import request, jsonify
+from ..use_cases.add_video import add_video
+from ..use_cases.get_videos import get_videos
+from ..repositories.sqlite_repository import SQLiteRepository
+from ..services.youtube_service import YouTubeService
+from .. import redis_client
 
-videos_db = []   
-
-def add_video(url):
-    video_info = get_video_info(url)
-    if video_info is None:
-        return {"error": "Invalid YouTube URL or API response"}, 400
-
-    video = Video(url=url, title=video_info['title'], thumbnail=video_info['thumbnail'])
-    videos_db.append(video.to_dict())
-    return video.to_dict()
+video_repository = SQLiteRepository()
+youtube_service = YouTubeService(redis_client=redis_client)
 
 
-def get_videos():
-    return videos_db
+def add_video_controller():
+    data = request.get_json()
+    url = data.get('url')
+    result = add_video(url, video_repository, redis_client, youtube_service)
+    return jsonify(result), 201 if 'error' not in result else 400
+
+
+def get_videos_controller():
+    videos = get_videos(video_repository)
+    return jsonify(videos), 200

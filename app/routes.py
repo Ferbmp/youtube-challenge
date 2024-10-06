@@ -1,14 +1,7 @@
-from flask import Blueprint, request, jsonify
-from .controllers import video_controller
+from flask import Blueprint
+from .controllers.video_controller import add_video_controller, get_videos_controller
 
 main_routes = Blueprint('main', __name__)
 
-@main_routes.route('/videos', methods=['POST'])
-def add_video():
-    url = request.json.get('url')
-    response = video_controller.add_video(url)
-    return jsonify(response), 201
-
-@main_routes.route('/videos', methods=['GET'])
-def get_videos():
-    return jsonify(video_controller.get_videos()), 200
+main_routes.route('/videos', methods=['POST'])(add_video_controller)
+main_routes.route('/videos', methods=['GET'])(get_videos_controller)
