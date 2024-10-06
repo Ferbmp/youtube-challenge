@@ -1,0 +1,42 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "YouTube Video API"
+  },
+  "paths": {
+    "/videos": {
+      "get": {
+        "summary": "List all videos",
+        "responses": {
+          "200": {
+            "description": "A list of videos"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new video",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Video added"
+          }
+        }
+      }
+    }
+  }
+}
