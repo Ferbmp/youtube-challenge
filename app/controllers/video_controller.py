@@ -14,7 +14,6 @@ def add_video_controller():
     data = request.get_json()
     url = data.get('url')
     result = add_video(url, video_repository, youtube_service, redis_repository)
-    print (result)
 
     if 'message' in result and result['message'] == "Video already exists.":
         return jsonify(result), 409
@@ -22,5 +21,5 @@ def add_video_controller():
     return jsonify(result), 201 if 'error' not in result else 400
 
 def get_videos_controller():
-    videos = get_videos(video_repository)
+    videos = get_videos(video_repository,redis_repository)
     return jsonify(videos), 200

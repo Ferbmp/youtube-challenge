@@ -3,11 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_migrate import Migrate
 import redis
-import os
 
 db = SQLAlchemy()
 
-def create_app(testing=False):
+def create_app(testing:bool=False):
     app = Flask(__name__)
 
   
@@ -16,21 +15,21 @@ def create_app(testing=False):
     else:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'   
     
-
     global redis_client
-    redis_client = redis.Redis(host='localhost', port=6379, db=0)
-    db.init_app(app)
 
+    if testing:
+        redis_client = redis.Redis(host='localhost', port=6379, db=1)
+    else:
+        redis_client = redis.Redis(host='localhost', port=6379, db=0)    
+    db.init_app(app)
 
     from .models.video_model import VideoModel  
 
- 
     with app.app_context():
         db.create_all()
 
  
     migrate = Migrate(app, db)
-
  
     try:
         redis_client.ping()

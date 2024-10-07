@@ -7,7 +7,6 @@ class RedisRepository(RepositoryInterface):
 
     def add(self, video: dict) -> None:
         self.redis_client.set(video['id'], json.dumps(video))
-
     def get(self, video_id: str) -> Optional[bytes]:
         return self.redis_client.get(video_id)
 

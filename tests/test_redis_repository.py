@@ -10,6 +10,7 @@ import json
 def redis_client():
     return redis.Redis(host='localhost', port=6379, db=1)
 
+
 @pytest.fixture
 def redis_repository(redis_client):
     return RedisRepository(redis_client)
