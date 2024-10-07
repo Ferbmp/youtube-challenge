@@ -4,15 +4,15 @@ import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    primary: {
-      main: "#ff0000",
+    mode: "dark",
+    background: {
+      default: "#181818",
+      paper: "#212121",
     },
-    secondary: {
-      main: "#ffffff",
+    text: {
+      primary: "#FFFFFF",
+      secondary: "#AAAAAA",
     },
-  },
-  typography: {
-    fontFamily: "var(--font-roboto)",
   },
 });
 
