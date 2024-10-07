@@ -3,13 +3,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_migrate import Migrate
 import redis
+from flask_cors import CORS
 
 db = SQLAlchemy()
 
 def create_app(testing:bool=False):
     app = Flask(__name__)
 
-  
+    CORS(app)
+    
     if testing:
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_videos.db'   
     else:
