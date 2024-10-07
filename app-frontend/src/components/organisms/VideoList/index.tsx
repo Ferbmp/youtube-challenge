@@ -4,23 +4,20 @@ import React from "react";
 import { List, ListItem, ListItemButton, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VideoThumbnail from "@/components/molecules/VideoThumbnail";
-
-interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-}
+import { Video } from "@/types";
 
 interface VideoListOrganismProps {
   videos: Video[];
   onVideoSelect: (id: string) => void;
   onVideoDelete: (id: string) => void;
+  currentVideoId: string;
 }
 
-const VideoListOrganism: React.FC<VideoListOrganismProps> = ({
+const VideoList: React.FC<VideoListOrganismProps> = ({
   videos,
   onVideoSelect,
   onVideoDelete,
+  currentVideoId,
 }) => {
   return (
     <List>
@@ -40,6 +37,14 @@ const VideoListOrganism: React.FC<VideoListOrganismProps> = ({
               <DeleteIcon />
             </IconButton>
           }
+          sx={{
+            backgroundColor:
+              video.id === currentVideoId ? "#282828" : "transparent",
+            "&:hover": {
+              backgroundColor: "#383838",
+            },
+            transition: "background-color 0.3s ease",
+          }}
         >
           <ListItemButton onClick={() => onVideoSelect(video.id)}>
             <VideoThumbnail thumbnail={video.thumbnail} title={video.title} />
@@ -50,4 +55,4 @@ const VideoListOrganism: React.FC<VideoListOrganismProps> = ({
   );
 };
 
-export default VideoListOrganism;
+export default VideoList;

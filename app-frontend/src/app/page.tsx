@@ -1,25 +1,17 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
-
 import { Container, Typography } from "@mui/material";
 import api from "@/services/api";
 import Header from "@/components/organisms/Header";
-import VideoPlayerOrganism from "@/components/organisms/VideoPlayer";
-import VideoListOrganism from "@/components/organisms/VideoList";
+import VideoScreen from "@/components/organisms/VideoScreen";
+import PlaylistPanel from "@/components/organisms/PlaylistPanel";
 import isValidYouTubeUrl from "@/utils/youtube_url_validator";
-
-interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-  videoId: string;
-}
+import { Video } from "@/types";
 
 const Home: React.FC = () => {
   const [videos, setVideos] = useState<Video[]>([]);
-  const [currentVideoId, setCurrentVideoId] = useState<string>("");
+  const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
@@ -30,6 +22,8 @@ const Home: React.FC = () => {
     try {
       const response = await api.get<Video[]>("/videos");
       setVideos(response.data);
+
+      setCurrentVideo(response.data.length > 0 ? response.data[0] : null);
     } catch (error) {
       console.error("Erro ao buscar vídeos:", error);
     }
@@ -57,10 +51,7 @@ const Home: React.FC = () => {
 
   const handleVideoSelect = (id: string) => {
     const selectedVideo = videos.find((video) => video.id === id);
-
-    if (selectedVideo) {
-      setCurrentVideoId(selectedVideo.id);
-    }
+    setCurrentVideo(selectedVideo || null);
   };
 
   const handleVideoDelete = async (id: string) => {
@@ -79,24 +70,23 @@ const Home: React.FC = () => {
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
       />
-      <Container maxWidth="xl" sx={{ mt: 2 }}>
+      <Container maxWidth="xl" sx={{ mt: 8 }}>
         <Grid container spacing={2}>
-          {/* Player de vídeo à esquerda */}
-          <Grid xs={12} md={8}>
-            {currentVideoId ? (
-              <VideoPlayerOrganism videoId={currentVideoId} />
+          <Grid item xs={12} md={8}>
+            {currentVideo ? (
+              <VideoScreen currentVideo={currentVideo} />
             ) : (
               <Typography variant="h5">
                 Selecione um vídeo para reproduzir
               </Typography>
             )}
           </Grid>
-          {/* Lista de vídeos à direita */}
-          <Grid xs={12} md={4}>
-            <VideoListOrganism
+          <Grid item xs={12} md={4}>
+            <PlaylistPanel
               videos={videos}
               onVideoSelect={handleVideoSelect}
               onVideoDelete={handleVideoDelete}
+              currentVideoId={currentVideo?.id || ""}
             />
           </Grid>
         </Grid>

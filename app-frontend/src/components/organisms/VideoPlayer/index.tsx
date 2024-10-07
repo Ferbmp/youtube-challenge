@@ -3,13 +3,11 @@ import React from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { Box } from "@mui/material";
 
-interface VideoPlayerOrganismProps {
+interface VideoPlayerProps {
   videoId: string;
 }
 
-const VideoPlayerOrganism: React.FC<VideoPlayerOrganismProps> = ({
-  videoId,
-}) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId }) => {
   const opts: YouTubeProps["opts"] = {
     width: "100%",
     height: "500",
@@ -25,4 +23,4 @@ const VideoPlayerOrganism: React.FC<VideoPlayerOrganismProps> = ({
   );
 };
 
-export default VideoPlayerOrganism;
+export default VideoPlayer;

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
-
-import { AppBar, Toolbar, Box, Typography } from "@mui/material";
+import { AppBar, Toolbar } from "@mui/material";
 import SearchBar from "@/components/molecules/SearchBar";
 
 interface HeaderProps {
@@ -10,28 +9,22 @@ interface HeaderProps {
   onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const HeaderOrganism: React.FC<HeaderProps> = ({
+const Header: React.FC<HeaderProps> = ({
   searchValue,
   onSearchChange,
   onSearchSubmit,
 }) => {
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h6">Minha Playlist</Typography>
-        </Box>
-        <Box sx={{ flexGrow: 1 }}>
-          <SearchBar
-            value={searchValue}
-            onChange={onSearchChange}
-            onSubmit={onSearchSubmit}
-          />
-        </Box>
-        <Box sx={{ flexGrow: 1 }} />
+    <AppBar position="static" sx={{ backgroundColor: "#0f0f0f" }}>
+      <Toolbar sx={{ justifyContent: "center" }}>
+        <SearchBar
+          value={searchValue}
+          onChange={onSearchChange}
+          onSubmit={onSearchSubmit}
+        />
       </Toolbar>
     </AppBar>
   );
 };
 
-export default HeaderOrganism;
+export default Header;
