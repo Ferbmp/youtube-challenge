@@ -20,7 +20,8 @@ def create_app(testing:bool=False):
     if testing:
         redis_client = redis.Redis(host='localhost', port=6379, db=1)
     else:
-        redis_client = redis.Redis(host='localhost', port=6379, db=0)    
+        redis_client = redis.Redis(host='redis', port=6379, db=0)
+          
     db.init_app(app)
 
     from .models.video_model import VideoModel  
