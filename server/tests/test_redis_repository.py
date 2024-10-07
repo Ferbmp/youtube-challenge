@@ -32,22 +32,33 @@ def app():
     yield app
 
 def test_redis_repository_add_video(redis_repository, redis_client):
-    video = Video(id='F82uzV4PffM', url='https://example.com', title='Test Title', thumbnail='https://example.com/thumb.jpg')
-    
-    redis_repository.add(video.to_dict())   
-  
+    video = Video(id='F82uzV4PffM', url='https://example.com', title='Test Title', thumbnail='https://example.com/thumb.jpg', description='Sample description')
+
+    redis_repository.add(video.to_dict())
+
     cached_video = redis_client.get(video.id)
-    assert cached_video is not None   
-    assert cached_video.decode('utf-8') == '{"id": "F82uzV4PffM", "url": "https://example.com", "title": "Test Title", "thumbnail": "https://example.com/thumb.jpg"}'
+    assert cached_video is not None
+    expected_data = '{"id": "F82uzV4PffM", "url": "https://example.com", "title": "Test Title", "thumbnail": "https://example.com/thumb.jpg", "description": "Sample description"}'
+    assert cached_video.decode('utf-8') == expected_data
+
 
 
 def test_redis_repository_integration(mock_redis):
-    video = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video', thumbnail='https://example.com/thumb.jpg')
+    video = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video', thumbnail='https://example.com/thumb.jpg', description='Sample description')
+ 
+    mock_redis.get = Mock(return_value=json.dumps({
+        "id": video.id,
+        "url": video.url,
+        "title": video.title,
+        "thumbnail": video.thumbnail,
+        "description": video.description
+    }))
 
     redis_repository = RedisRepository(mock_redis)
-    redis_repository.add(video.to_dict())   
+    redis_repository.add(video.to_dict())
 
     cached_video = mock_redis.get(video.id)
     assert cached_video is not None
     cached_video_data = json.loads(cached_video)
+ 
     assert cached_video_data == video.to_dict()

@@ -13,7 +13,8 @@ def get_videos(video_repository, redis_repository) -> List[Dict[str, Union[str, 
                 id=cached_video['id'],
                 url=cached_video['url'],
                 title=cached_video['title'],
-                thumbnail=cached_video['thumbnail']
+                thumbnail=cached_video['thumbnail'],
+                description=cached_video['description']
             )
             video_repository.add(video)
             videos_dict[cached_video['id']] = cached_video

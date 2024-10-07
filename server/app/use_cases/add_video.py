@@ -28,7 +28,7 @@ def add_video(
     if video_info is None:
         return {"error": "Invalid YouTube URL or API response"}, 400
 
-    video = Video(url=url, title=video_info['title'], thumbnail=video_info['thumbnail'], id=video_info['id'])
+    video = Video(url=url, title=video_info['title'], thumbnail=video_info['thumbnail'], id=video_info['id'], description=video_info['description'])
     saved_video = video_repository.add(video)
 
     redis_repository.add(video_info)

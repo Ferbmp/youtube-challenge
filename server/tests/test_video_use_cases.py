@@ -43,19 +43,25 @@ def youtube_service(mocker):
 
 def test_add_video_use_case(video_repository, youtube_service, redis_repository):
     video_data = {
-        'url': 'https://www.youtube.com/watch?v=F72uzV4PffM'
+        'url': 'https://www.youtube.com/watch?v=F82uzV4PffM'
+    }
+    youtube_service.get_video_info.return_value = {
+        'id': 'F82uzV4PffM',
+        'title': 'Test Video',
+        'thumbnail': 'https://example.com/thumb.jpg',
+        'description': 'Video description'
     }
     result = add_video(video_data['url'], video_repository, youtube_service, redis_repository)
 
     assert result['title'] == 'Test Video'
-    assert VideoModel.query.count() == 1 
+    assert VideoModel.query.count() == 1
 
-def test_get_videos_use_case(video_repository):
-    video1 = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video 1', thumbnail='https://example.com/thumb1.jpg')
-    video2 = Video(id='XYZ123', url='https://example.com', title='Test Video 2', thumbnail='https://example.com/thumb2.jpg')
+def test_get_videos_use_case(video_repository, redis_repository):
+    video1 = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video 1', thumbnail='https://example.com/thumb1.jpg', description='Description 1')
+    video2 = Video(id='XYZ123', url='https://example.com', title='Test Video 2', thumbnail='https://example.com/thumb2.jpg', description='Description 2')
     
     video_repository.add(video1)
     video_repository.add(video2)
 
-    videos = get_videos(video_repository)
-    assert len(videos) == 2  
+    videos = get_videos(video_repository, redis_repository)  
+    assert len(videos) == 2

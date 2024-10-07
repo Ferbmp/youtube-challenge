@@ -6,12 +6,14 @@ class VideoModel(db.Model):
     id: str = db.Column(db.String(11), primary_key=True)   
     url: str = db.Column(db.String(255), nullable=False)
     title: str = db.Column(db.String(255), nullable=False)
-    thumbnail: str = db.Column(db.String(255), nullable=False)
+    thumbnail: str = db.Column(db.String(255), nullable=True)
+    description: str = db.Column(db.String(255), nullable=True)
 
     def to_dict(self) -> Dict[str, str]:
         return {
             'id': self.id,
             'url': self.url,
             'title': self.title,
-            'thumbnail': self.thumbnail
+            'thumbnail': self.thumbnail,
+            'description': self.description
         }

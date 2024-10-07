@@ -28,6 +28,7 @@ class YouTubeService:
                     'id': video_id,
                     'title': video['title'],
                     'thumbnail': video['thumbnails']['high']['url'], 
+                    'description': video['description'],
                     'url': url, 
                 }
                 return video_info

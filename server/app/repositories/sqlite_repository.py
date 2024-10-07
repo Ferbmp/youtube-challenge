@@ -16,7 +16,8 @@ class SQLiteRepository(RepositoryInterface):
             id=video.id,
             url=video.url,
             title=video.title,
-            thumbnail=video.thumbnail
+            thumbnail=video.thumbnail,
+            description=video.description
         )
         db.session.add(video_model)
         db.session.commit()
@@ -29,14 +30,15 @@ class SQLiteRepository(RepositoryInterface):
                 id=video_model.id,
                 url=video_model.url,
                 title=video_model.title,
-                thumbnail=video_model.thumbnail
-            )
+                thumbnail=video_model.thumbnail,
+                description=video_model.description    
+                )
         return None
 
     def get_all(self) -> List[Video]:
         video_models = VideoModel.query.all()
         return [
-            Video(id=video.id, url=video.url, title=video.title, thumbnail=video.thumbnail)
+            Video(id=video.id, url=video.url, title=video.title, thumbnail=video.thumbnail, description=video.description)
             for video in video_models
         ]
     
