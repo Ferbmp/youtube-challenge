@@ -3,16 +3,20 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_migrate import Migrate
 import redis
+import os
 
 db = SQLAlchemy()
 
-def create_app():
+def create_app(testing=False):
     app = Flask(__name__)
 
+  
+    if testing:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_videos.db'   
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'   
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videos.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    
+
     global redis_client
     redis_client = redis.Redis(host='localhost', port=6379, db=0)
     db.init_app(app)

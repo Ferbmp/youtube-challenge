@@ -5,8 +5,14 @@ from .repository_interface import RepositoryInterface
 
 class SQLiteRepository(RepositoryInterface):
     def add(self, video: Video):
+        existing_video = db.session.get(VideoModel, video.id)
+        if existing_video:
+            return {
+                "message": "Video already exists.",
+            }
+
         video_model = VideoModel(
-            id=video.id,  
+            id=video.id,
             url=video.url,
             title=video.title,
             thumbnail=video.thumbnail
@@ -17,4 +23,7 @@ class SQLiteRepository(RepositoryInterface):
 
     def get_all(self):
         video_models = VideoModel.query.all()
-        return [Video(url=video.url, title=video.title, thumbnail=video.thumbnail, id=video.id) for video in video_models]
+        return [
+            Video(url=video.url, title=video.title, thumbnail=video.thumbnail, id=video.id)
+            for video in video_models
+        ]
