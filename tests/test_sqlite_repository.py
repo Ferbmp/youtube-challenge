@@ -7,7 +7,6 @@ from app.models.video_model import VideoModel
 @pytest.fixture
 def app():
     app = create_app(testing=True)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_videos.db'  
     with app.app_context():
         db.create_all()   
         yield app

@@ -6,6 +6,18 @@ from app.use_cases.add_video import add_video
 from app.use_cases.get_videos import get_videos
 from app.entities.video import Video
 from app.models.video_model import VideoModel
+import redis
+from app.repositories.redis_repository import RedisRepository
+
+
+@pytest.fixture
+def redis_client():
+    return redis.Redis(host='localhost', port=6379, db=1)
+
+@pytest.fixture
+def redis_repository(redis_client):
+    return RedisRepository(redis_client)
+
  
 @pytest.fixture
 def app():
@@ -30,14 +42,14 @@ def youtube_service(mocker):
     }
     return mock_service
 
-def test_add_video_use_case(repository, youtube_service):
+def test_add_video_use_case(repository, youtube_service, redis_repository):
     video_data = {
-        'url': 'https://www.youtube.com/watch?v=F82uzV4PffM'
+        'url': 'https://www.youtube.com/watch?v=F72uzV4PffM'
     }
-    result = add_video(video_data['url'], repository, None, youtube_service)
+    result = add_video(video_data['url'], repository, youtube_service, redis_repository)
 
-    assert result['title'] == 'Test Video'   
-    assert VideoModel.query.count() == 1   
+    assert result['title'] == 'Test Video'
+    assert VideoModel.query.count() == 1 
 
 def test_get_videos_use_case(repository):
     video1 = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video 1', thumbnail='https://example.com/thumb1.jpg')

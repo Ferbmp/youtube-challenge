@@ -3,18 +3,23 @@ from ..use_cases.add_video import add_video
 from ..use_cases.get_videos import get_videos
 from ..repositories.sqlite_repository import SQLiteRepository
 from ..services.youtube_service import YouTubeService
-from .. import redis_client
+from .. import redis_client  
+from ..repositories.redis_repository import RedisRepository
 
+redis_repository = RedisRepository(redis_client)
 video_repository = SQLiteRepository()
-youtube_service = YouTubeService(redis_client=redis_client)
-
+youtube_service = YouTubeService()
 
 def add_video_controller():
     data = request.get_json()
     url = data.get('url')
-    result = add_video(url, video_repository, redis_client, youtube_service)
-    return jsonify(result), 201 if 'error' not in result else 400
+    result = add_video(url, video_repository, youtube_service, redis_repository)
+    print (result)
 
+    if 'message' in result and result['message'] == "Video already exists.":
+        return jsonify(result), 409
+
+    return jsonify(result), 201 if 'error' not in result else 400
 
 def get_videos_controller():
     videos = get_videos(video_repository)
