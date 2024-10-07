@@ -18,3 +18,6 @@ class RedisRepository(RepositoryInterface):
             if video_data:
                 videos.append(json.loads(video_data))
         return videos
+    
+    def delete(self, video_id: str) -> None:
+        self.redis_client.delete(video_id)    

@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from ..use_cases.add_video import add_video
 from ..use_cases.get_videos import get_videos
+from ..use_cases.delete_video import delete_video
 from ..repositories.sqlite_repository import SQLiteRepository
 from ..services.youtube_service import YouTubeService
 from .. import redis_client  
@@ -23,3 +24,9 @@ def add_video_controller():
 def get_videos_controller():
     videos = get_videos(video_repository,redis_repository)
     return jsonify(videos), 200
+
+def delete_video_controller(video_id: str):
+    result = delete_video(video_id, video_repository, redis_repository)
+    if 'error' in result:
+        return jsonify(result), 404
+    return jsonify(result), 200

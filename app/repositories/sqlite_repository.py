@@ -39,3 +39,11 @@ class SQLiteRepository(RepositoryInterface):
             Video(id=video.id, url=video.url, title=video.title, thumbnail=video.thumbnail)
             for video in video_models
         ]
+    
+    def delete(self, video_id: str) -> bool:
+        video_model = db.session.get(VideoModel, video_id)
+        if video_model:
+            db.session.delete(video_model)
+            db.session.commit()
+            return True
+        return False
