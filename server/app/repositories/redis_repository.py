@@ -1,6 +1,7 @@
 import json
 from .repository_interface import RepositoryInterface
-from typing import Optional, Dict,List
+from typing import Optional, Dict,List, Tuple
+
 class RedisRepository(RepositoryInterface):
     def __init__(self, redis_client):
         self.redis_client = redis_client
@@ -21,3 +22,12 @@ class RedisRepository(RepositoryInterface):
     
     def delete(self, video_id: str) -> None:
         self.redis_client.delete(video_id)    
+
+    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Dict[str, str]], int]:
+        all_videos = self.get_all()
+        total_videos = len(all_videos)
+        start = (page - 1) * per_page
+        end = start + per_page
+        paginated_videos = all_videos[start:end]
+        return paginated_videos, total_videos        
+    

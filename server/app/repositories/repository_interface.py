@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Tuple
 
 class RepositoryInterface(ABC):
     @abstractmethod
@@ -12,4 +12,8 @@ class RepositoryInterface(ABC):
 
     @abstractmethod
     def get_all(self) -> List[Dict[str, str]]:
+        pass
+
+    @abstractmethod
+    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Dict[str, str]], int]:
         pass

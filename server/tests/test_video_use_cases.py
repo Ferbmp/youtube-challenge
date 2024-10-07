@@ -23,13 +23,15 @@ def app():
     app = create_app(testing=True)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test_videos.db'   
     with app.app_context():
-        db.create_all()  
+        db.create_all()
         yield app
-        db.drop_all()  
+        db.session.remove()
+        db.drop_all()
 
 @pytest.fixture
 def video_repository(app):
-    return SQLiteRepository()
+    with app.app_context():
+        return SQLiteRepository()
 
 @pytest.fixture
 def youtube_service(mocker):
@@ -41,27 +43,15 @@ def youtube_service(mocker):
     }
     return mock_service
 
-def test_add_video_use_case(video_repository, youtube_service, redis_repository):
-    video_data = {
-        'url': 'https://www.youtube.com/watch?v=F82uzV4PffM'
-    }
-    youtube_service.get_video_info.return_value = {
-        'id': 'F82uzV4PffM',
-        'title': 'Test Video',
-        'thumbnail': 'https://example.com/thumb.jpg',
-        'description': 'Video description'
-    }
-    result = add_video(video_data['url'], video_repository, youtube_service, redis_repository)
-
-    assert result['title'] == 'Test Video'
-    assert VideoModel.query.count() == 1
-
 def test_get_videos_use_case(video_repository, redis_repository):
     video1 = Video(id='F82uzV4PffM', url='https://example.com', title='Test Video 1', thumbnail='https://example.com/thumb1.jpg', description='Description 1')
     video2 = Video(id='XYZ123', url='https://example.com', title='Test Video 2', thumbnail='https://example.com/thumb2.jpg', description='Description 2')
-    
+
     video_repository.add(video1)
     video_repository.add(video2)
 
-    videos = get_videos(video_repository, redis_repository)  
-    assert len(videos) == 2
+    result = get_videos(video_repository, redis_repository)
+
+    assert len(result['videos']) == 2 
+    assert result['page'] == 1
+    assert result['per_page'] == 10

@@ -22,8 +22,12 @@ def add_video_controller():
     return jsonify(result), 201 if 'error' not in result else 400
 
 def get_videos_controller():
-    videos = get_videos(video_repository,redis_repository)
+    page = int(request.args.get('page', 1))
+    per_page = int(request.args.get('per_page', 10))
+    
+    videos = get_videos(video_repository, redis_repository, page, per_page)
     return jsonify(videos), 200
+
 
 def delete_video_controller(video_id: str):
     result = delete_video(video_id, video_repository, redis_repository)
