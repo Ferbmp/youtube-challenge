@@ -1,27 +1,46 @@
 "use client";
 import React from "react";
-
-import { List, ListItem, ListItemButton, IconButton } from "@mui/material";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  IconButton,
+  Skeleton,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VideoThumbnail from "@/components/molecules/VideoThumbnail";
 import { Video } from "@/types";
 
-interface VideoListOrganismProps {
-  videos: Video[];
+interface VideoListProps {
+  videos?: Video[];
   onVideoSelect: (id: string) => void;
   onVideoDelete: (id: string) => void;
-  currentVideoId: string;
+  currentVideoId?: string;
+  isLoading?: boolean;
 }
 
-const VideoList: React.FC<VideoListOrganismProps> = ({
+const VideoList: React.FC<VideoListProps> = ({
   videos,
   onVideoSelect,
   onVideoDelete,
   currentVideoId,
+  isLoading,
 }) => {
+  if (isLoading) {
+    return (
+      <List>
+        {Array.from(new Array(5)).map((_, index) => (
+          <ListItem key={index}>
+            <Skeleton variant="rectangular" width="100%" height={82} />
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
+
   return (
     <List>
-      {videos.map((video) => (
+      {videos?.map((video) => (
         <ListItem
           key={video.id}
           disablePadding
@@ -34,7 +53,7 @@ const VideoList: React.FC<VideoListOrganismProps> = ({
                 onVideoDelete(video.id);
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon sx={{ color: "#fff" }} />
             </IconButton>
           }
           sx={{
@@ -44,10 +63,16 @@ const VideoList: React.FC<VideoListOrganismProps> = ({
               backgroundColor: "#383838",
             },
             transition: "background-color 0.3s ease",
+            width: "100%",
+            maxWidth: "480px",
           }}
         >
           <ListItemButton onClick={() => onVideoSelect(video.id)}>
-            <VideoThumbnail thumbnail={video.thumbnail} title={video.title} />
+            <VideoThumbnail
+              thumbnail={video.thumbnail}
+              title={video.title}
+              description={video.description}
+            />
           </ListItemButton>
         </ListItem>
       ))}

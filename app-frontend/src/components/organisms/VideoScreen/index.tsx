@@ -6,16 +6,16 @@ import VideoPlayer from "../VideoPlayer";
 import { Video } from "@/types";
 
 interface VideoScreenProps {
-  currentVideo: Video;
+  currentVideo: Video | null;
 }
 
 const VideoScreen: React.FC<VideoScreenProps> = ({ currentVideo }) => {
   return (
     <Box>
-      <VideoPlayer videoId={currentVideo.id} />
+      <VideoPlayer videoId={currentVideo?.id} />
       <VideoDescription
-        title={currentVideo.title}
-        description={currentVideo.description}
+        title={currentVideo?.title}
+        description={currentVideo?.description}
       />
     </Box>
   );

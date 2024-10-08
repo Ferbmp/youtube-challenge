@@ -1,13 +1,18 @@
+"use client";
 import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
-import VideoList from "../VideoList";
+import { Box, Typography, Paper, CircularProgress } from "@mui/material";
+
 import { Video } from "@/types";
+import VideoList from "../VideoList";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useVideos } from "@/hooks/useVideos";
 
 interface PlaylistPanelProps {
   videos: Video[];
   onVideoSelect: (id: string) => void;
   onVideoDelete: (id: string) => void;
-  currentVideoId: string;
+  currentVideoId?: string;
+  isLoading?: boolean;
 }
 
 const PlaylistPanel: React.FC<PlaylistPanelProps> = ({
@@ -15,29 +20,55 @@ const PlaylistPanel: React.FC<PlaylistPanelProps> = ({
   onVideoSelect,
   onVideoDelete,
   currentVideoId,
+  isLoading,
 }) => {
+  const { throttledFetchNextPage, hasNextPage } = useVideos();
   return (
-    <Paper
-      sx={{
-        width: "100%",
-        maxHeight: "500",
-        overflowY: "auto",
-        backgroundColor: "#121212",
-        color: "#fff",
-        borderRadius: "8px",
-        marginLeft: "1.5rem",
+    <div
+      id="scrollableDiv"
+      style={{
+        height: "500px",
+        overflow: "auto",
+        display: "flex",
+        flexDirection: "column",
+        scrollbarWidth: "thin",
+        scrollbarColor: "#606060 transparent",
       }}
     >
-      <Box sx={{ padding: 2, borderBottom: "1px solid #424242" }}>
-        <Typography variant="h6">Minha Playlist</Typography>
-      </Box>
-      <VideoList
-        videos={videos}
-        onVideoSelect={onVideoSelect}
-        onVideoDelete={onVideoDelete}
-        currentVideoId={currentVideoId}
-      />
-    </Paper>
+      <InfiniteScroll
+        dataLength={videos.length}
+        next={throttledFetchNextPage}
+        hasMore={!!hasNextPage || false}
+        loader={
+          videos.length > 0 ? (
+            <div style={{ padding: "1rem", textAlign: "center" }}>
+              <CircularProgress />
+            </div>
+          ) : null
+        }
+        scrollableTarget="scrollableDiv"
+      >
+        <Paper
+          sx={{
+            backgroundColor: "#0f0f0f",
+            color: "#fff",
+            borderRadius: "8px",
+            overflow: "hidden",
+          }}
+        >
+          <Box sx={{ padding: 2, borderBottom: "1px solid #303030" }}>
+            <Typography variant="h6">Minha Playlist</Typography>
+          </Box>
+          <VideoList
+            videos={videos}
+            onVideoSelect={onVideoSelect}
+            onVideoDelete={onVideoDelete}
+            currentVideoId={currentVideoId}
+            isLoading={isLoading}
+          />
+        </Paper>
+      </InfiniteScroll>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ import YouTube, { YouTubeProps } from "react-youtube";
 import { Box } from "@mui/material";
 
 interface VideoPlayerProps {
-  videoId: string;
+  videoId?: string;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId }) => {
@@ -18,7 +18,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoId }) => {
 
   return (
     <Box>
-      <YouTube videoId={videoId} opts={opts} />
+      <YouTube key={videoId} videoId={videoId} opts={opts} />
     </Box>
   );
 };

@@ -9,8 +9,8 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 interface VideoDescriptionProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }
 
 const VideoDescription: React.FC<VideoDescriptionProps> = ({
@@ -28,7 +28,7 @@ const VideoDescription: React.FC<VideoDescriptionProps> = ({
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography>Description</Typography>
+          <Typography>Descrição:</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Typography paragraph style={{ whiteSpace: "pre-line" }}>
