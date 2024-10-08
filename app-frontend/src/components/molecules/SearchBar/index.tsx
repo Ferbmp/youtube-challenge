@@ -61,7 +61,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, onSubmit }) => {
       <Button
         type="submit"
         variant="contained"
-        disabled={!value}
+        disabled={!value.trim()}
         sx={{
           height: "40px",
           minWidth: "64px",

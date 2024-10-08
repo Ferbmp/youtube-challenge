@@ -5,8 +5,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import api from "@/services/api";
 import { Video } from "@/types";
-import isValidYouTubeUrl from "@/utils/youtube_url_validator";
+import isValidYouTubeUrl from "@/utils/isValidYouTubeUrl";
 import debounce from "lodash/debounce";
+import { AxiosError } from "axios";
 
 interface VideoPage {
   videos: Video[];
@@ -23,7 +24,7 @@ export const useVideos = () => {
   }: {
     pageParam?: number;
   }): Promise<VideoPage> => {
-    const response = await api.get(`/videos?page=${pageParam}&per_page=8`);
+    const response = await api.get(`/videos?page=${pageParam}&per_page=6`);
     const data = response.data;
 
     return {
@@ -43,7 +44,6 @@ export const useVideos = () => {
     isFetchingNextPage,
   } = useInfiniteQuery<VideoPage, Error>("videos", fetchVideos, {
     getNextPageParam: (lastPage) => {
-      console.log("Dados da última página:", lastPage);
       if (lastPage.page < lastPage.total_pages) {
         return lastPage.page + 1;
       }
@@ -64,12 +64,11 @@ export const useVideos = () => {
 
   const throttledFetchNextPage = debounce(() => {
     if (hasNextPage && !isFetchingNextPage) {
-      console.log("Chamando fetchNextPage via debounce");
       fetchNextPage();
     }
   }, 800);
 
-  const addVideo = useMutation<void, Error, string>(
+  const addVideo = useMutation<void, AxiosError, string>(
     async (url: string) => {
       if (!isValidYouTubeUrl(url)) {
         throw new Error("Por favor, insira uma URL válida do YouTube.");
@@ -81,13 +80,28 @@ export const useVideos = () => {
         queryClient.invalidateQueries("videos");
         toast.success("Vídeo adicionado com sucesso!");
       },
-      onError: (error: Error) => {
-        toast.error(error.message);
+      onError: (error: unknown) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 409) {
+            toast.error("Vídeo já existente");
+          } else {
+            const errorMessage = error.response?.data?.error;
+            toast.error(
+              `Ocorreu um erro ao adicionar o vídeo: ${
+                errorMessage || "Erro desconhecido"
+              }`
+            );
+          }
+        } else if (error instanceof Error) {
+          toast.error(error.message);
+        } else {
+          toast.error("Ocorreu um erro desconhecido.");
+        }
       },
     }
   );
 
-  const deleteVideo = useMutation<void, Error, string>(
+  const deleteVideo = useMutation<void, AxiosError, string>(
     async (id: string) => {
       await api.delete(`/videos/${id}`);
     },
@@ -100,7 +114,7 @@ export const useVideos = () => {
           setCurrentVideo(null);
         }
       },
-      onError: (error: Error) => {
+      onError: (error: AxiosError) => {
         toast.error(`Erro ao deletar o vídeo: ${error.message}`);
       },
     }

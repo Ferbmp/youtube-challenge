@@ -40,7 +40,7 @@ const PlaylistPanel: React.FC<PlaylistPanelProps> = ({
         next={throttledFetchNextPage}
         hasMore={!!hasNextPage || false}
         loader={
-          videos.length > 0 ? (
+          videos.length > 0 && !!hasNextPage ? (
             <div style={{ padding: "1rem", textAlign: "center" }}>
               <CircularProgress />
             </div>
