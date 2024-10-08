@@ -18,7 +18,8 @@ class SQLiteRepository(RepositoryInterface):
             url=video.url,
             title=video.title,
             thumbnail=video.thumbnail,
-            description=video.description
+            description=video.description,
+            created_at=video.created_at
         )
         db.session.add(video_model)
         db.session.commit()
@@ -32,28 +33,38 @@ class SQLiteRepository(RepositoryInterface):
                 url=video_model.url,
                 title=video_model.title,
                 thumbnail=video_model.thumbnail,
-                description=video_model.description    
+                description=video_model.description,   
+                created_at=video_model.created_at 
                 )
         return None
 
     def get_all(self) -> List[Video]:
-        video_models = VideoModel.query.all()
+        video_models = VideoModel.query.order_by(VideoModel.created_at.desc()).all()
         return [
-            Video(id=video.id, url=video.url, title=video.title, thumbnail=video.thumbnail, description=video.description)
+            Video(
+                id=video.id,
+                url=video.url,
+                title=video.title,
+                thumbnail=video.thumbnail,
+                description=video.description,
+                created_at=video.created_at
+            )
             for video in video_models
         ]
     
     def get_all_paginated(self, page: int, per_page: int):
-        videos_query = VideoModel.query.paginate(page=page, per_page=per_page, error_out=False)
+        videos_query = VideoModel.query.order_by(VideoModel.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
         video_models = videos_query.items
         return [
             Video(
-                id=video.id, 
-                url=video.url, 
-                title=video.title, 
+                id=video.id,
+                url=video.url,
+                title=video.title,
                 thumbnail=video.thumbnail,
-                description=video.description  
-            ) for video in video_models
+                description=video.description,
+                created_at=video.created_at
+            )
+            for video in video_models
         ]
 
     def delete(self, video_id: str) -> bool:

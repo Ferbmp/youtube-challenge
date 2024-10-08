@@ -1,13 +1,16 @@
 import json
 from .repository_interface import RepositoryInterface
 from typing import Optional, Dict,List, Tuple
+from datetime import datetime, timezone
 
 class RedisRepository(RepositoryInterface):
     def __init__(self, redis_client):
         self.redis_client = redis_client
 
     def add(self, video: dict) -> None:
+        video['created_at'] = video.get('created_at') or datetime.now(timezone.utc).isoformat()
         self.redis_client.set(video['id'], json.dumps(video))
+
     def get(self, video_id: str) -> Optional[bytes]:
         return self.redis_client.get(video_id)
 
@@ -17,7 +20,10 @@ class RedisRepository(RepositoryInterface):
         for key in keys:
             video_data = self.redis_client.get(key)
             if video_data:
-                videos.append(json.loads(video_data))
+                video = json.loads(video_data)
+                videos.append(video)
+ 
+        videos.sort(key=lambda x: x.get('created_at', ''), reverse=True)
         return videos
     
     def delete(self, video_id: str) -> None:

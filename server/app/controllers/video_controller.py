@@ -22,10 +22,12 @@ def add_video_controller():
     return jsonify(result), 201 if 'error' not in result else 400
 
 def get_videos_controller():
-    page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 10))
-    
+
+    page = request.args.get('page', type=int)
+    per_page = request.args.get('per_page', type=int)
+ 
     videos = get_videos(video_repository, redis_repository, page, per_page)
+    
     return jsonify(videos), 200
 
 

@@ -4,6 +4,7 @@ from ..repositories.sqlite_repository import SQLiteRepository
 from ..repositories.redis_repository import RedisRepository
 from ..services.youtube_service import YouTubeService
 from app.utils.utils import extract_video_id
+from datetime import datetime, timezone
 
 def add_video(
     url: str, 
@@ -27,10 +28,20 @@ def add_video(
     video_info = youtube_service.get_video_info(url)
     if video_info is None:
         return {"error": "Invalid YouTube URL or API response"}, 400
+ 
+    created_at = datetime.now(timezone.utc).isoformat()
 
-    video = Video(url=url, title=video_info['title'], thumbnail=video_info['thumbnail'], id=video_info['id'], description=video_info['description'])
+    video = Video(
+        url=url,
+        title=video_info['title'],
+        thumbnail=video_info['thumbnail'],
+        description=video_info['description'],
+        id=video_info['id'],
+        created_at=created_at
+    )
     saved_video = video_repository.add(video)
 
+    video_info['created_at'] = created_at
     redis_repository.add(video_info)
 
     return saved_video.to_dict() if hasattr(saved_video, 'to_dict') else video_info

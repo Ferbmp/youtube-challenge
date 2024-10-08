@@ -7,7 +7,6 @@ class YouTubeService:
         self.api_key = os.getenv('YOUTUBE_API_KEY')
         self.base_url = "https://www.googleapis.com/youtube/v3/videos"
 
- 
     def get_video_info(self, url: str) -> Optional[Dict[str, str]]:
         video_id = extract_video_id(url)
         if not video_id:
