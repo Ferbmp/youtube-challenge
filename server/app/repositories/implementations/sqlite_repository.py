@@ -1,4 +1,4 @@
-from typing import Optional, List, Tuple, Set
+from typing import Optional, List, Set
 from app import db
 from ...entities.video import Video
 from ...models.video_model import VideoModel
@@ -38,24 +38,6 @@ class SQLiteRepository(RepositoryInterface):
             )
         return None
 
-    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Video], int]:
-        paginated_query = VideoModel.query.order_by(VideoModel.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
-        video_models = paginated_query.items
-        total_videos = paginated_query.total
-
-        paginated_videos = [
-            Video(
-                id=video.id,
-                url=video.url,
-                title=video.title,
-                thumbnail=video.thumbnail,
-                description=video.description,
-                created_at=video.created_at
-            )
-            for video in video_models
-        ]
-
-        return paginated_videos, total_videos
 
     def get_videos_excluding_ids(self, exclude_ids: Set[str], offset: int, limit: int) -> List[Video]:
         query = VideoModel.query.filter(~VideoModel.id.in_(exclude_ids)).order_by(VideoModel.created_at.desc())

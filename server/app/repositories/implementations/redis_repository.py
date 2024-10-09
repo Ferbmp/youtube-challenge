@@ -31,12 +31,10 @@ class RedisRepository(RepositoryInterface):
         total_videos = self.redis_client.zcard('videos_sorted')
 
         if total_videos == 0:
-            return [], 0
-
+            return [], 0   
         start = (page - 1) * per_page
         end = start + per_page - 1  
 
-   
         video_ids = self.redis_client.zrevrange('videos_sorted', start, end)
 
         paginated_videos = []
@@ -48,7 +46,7 @@ class RedisRepository(RepositoryInterface):
             else:
                 self.redis_client.zrem('videos_sorted', video_id)
 
-        return paginated_videos 
+        return paginated_videos, total_videos  
 
     def _cleanup_expired_video_ids(self):
         video_ids = self.redis_client.zrange('videos_sorted', 0, -1)
