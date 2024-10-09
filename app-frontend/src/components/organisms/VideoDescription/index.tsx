@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  Typography,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Box,
+  Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { StyledBox, TitleTypography, DescriptionTypography } from "./styles";
 
 interface VideoDescriptionProps {
   title?: string;
@@ -18,10 +18,8 @@ const VideoDescription: React.FC<VideoDescriptionProps> = ({
   description,
 }) => {
   return (
-    <Box sx={{ width: "100%" }}>
-      <Typography variant="h6" sx={{ marginBottom: 1 }}>
-        {title}
-      </Typography>
+    <StyledBox>
+      <TitleTypography variant="h6">{title}</TitleTypography>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -31,12 +29,10 @@ const VideoDescription: React.FC<VideoDescriptionProps> = ({
           <Typography>Descrição:</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography paragraph style={{ whiteSpace: "pre-line" }}>
-            {description}
-          </Typography>
+          <DescriptionTypography paragraph>{description}</DescriptionTypography>
         </AccordionDetails>
       </Accordion>
-    </Box>
+    </StyledBox>
   );
 };
 

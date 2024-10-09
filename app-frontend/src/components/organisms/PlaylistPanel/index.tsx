@@ -1,11 +1,16 @@
 "use client";
 import React from "react";
-import { Box, Typography, Paper, CircularProgress } from "@mui/material";
-
+import { Typography, CircularProgress } from "@mui/material";
 import { Video } from "@/types";
 import VideoList from "../VideoList";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useVideos } from "@/hooks/useVideos";
+import {
+  EmptyPlaylistBox,
+  ScrollableDiv,
+  StyledPaper,
+  StyledTitleBox,
+} from "./styles";
 
 interface PlaylistPanelProps {
   videos: Video[];
@@ -22,22 +27,13 @@ const PlaylistPanel: React.FC<PlaylistPanelProps> = ({
   currentVideoId,
   isLoading,
 }) => {
-  const { throttledFetchNextPage, hasNextPage } = useVideos();
+  const { debouncedFetchNextPage, hasNextPage } = useVideos();
+
   return (
-    <div
-      id="scrollableDiv"
-      style={{
-        height: "500px",
-        overflow: "auto",
-        display: "flex",
-        flexDirection: "column",
-        scrollbarWidth: "thin",
-        scrollbarColor: "#606060 transparent",
-      }}
-    >
+    <ScrollableDiv id="scrollableDiv">
       <InfiniteScroll
         dataLength={videos.length}
-        next={throttledFetchNextPage}
+        next={debouncedFetchNextPage}
         hasMore={!!hasNextPage || false}
         loader={
           videos.length > 0 && !!hasNextPage ? (
@@ -48,27 +44,28 @@ const PlaylistPanel: React.FC<PlaylistPanelProps> = ({
         }
         scrollableTarget="scrollableDiv"
       >
-        <Paper
-          sx={{
-            backgroundColor: "#0f0f0f",
-            color: "#fff",
-            borderRadius: "8px",
-            overflow: "hidden",
-          }}
-        >
-          <Box sx={{ padding: 2, borderBottom: "1px solid #303030" }}>
+        <StyledPaper>
+          <StyledTitleBox>
             <Typography variant="h6">Minha Playlist</Typography>
-          </Box>
-          <VideoList
-            videos={videos}
-            onVideoSelect={onVideoSelect}
-            onVideoDelete={onVideoDelete}
-            currentVideoId={currentVideoId}
-            isLoading={isLoading}
-          />
-        </Paper>
+          </StyledTitleBox>
+          {(!videos || videos.length === 0) && !isLoading ? (
+            <EmptyPlaylistBox>
+              <Typography variant="body1" sx={{ color: "#fff" }}>
+                Sua playlist está vazia.
+              </Typography>
+            </EmptyPlaylistBox>
+          ) : (
+            <VideoList
+              videos={videos}
+              onVideoSelect={onVideoSelect}
+              onVideoDelete={onVideoDelete}
+              currentVideoId={currentVideoId}
+              isLoading={isLoading}
+            />
+          )}
+        </StyledPaper>
       </InfiniteScroll>
-    </div>
+    </ScrollableDiv>
   );
 };
 

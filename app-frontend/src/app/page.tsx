@@ -48,7 +48,7 @@ const Home: React.FC = () => {
         onSearchChange={handleSearchChange}
         onSearchSubmit={handleSearchSubmit}
       />
-      <Container maxWidth="xl" sx={{ mt: 8 }}>
+      <Container maxWidth={false} sx={{ mt: 8, width: "85%", mx: "auto" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <VideoScreen currentVideo={currentVideo} />

@@ -1,6 +1,8 @@
 "use client";
+
 import React from "react";
-import { Box, Typography, CardMedia } from "@mui/material";
+import { Typography } from "@mui/material";
+import { StyledBox, StyledCardMedia, StyledTextBox } from "./styles";
 
 interface VideoThumbnailProps {
   thumbnail: string;
@@ -14,60 +16,15 @@ const VideoThumbnail: React.FC<VideoThumbnailProps> = ({
   description,
 }) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
-      <CardMedia
-        component="img"
-        image={thumbnail}
-        alt={title}
-        sx={{
-          maxWidth: 168,
-          height: "100%",
-          maxHeight: 94,
-          borderRadius: "4px",
-          flexShrink: 0,
-        }}
-      />
-      <Box
-        sx={{
-          marginLeft: 2,
-          overflow: "hidden",
-          flex: 1,
-          width: "100%",
-          maxWidth: "220px",
-          minWidth: "220px",
-        }}
-      >
-        <Typography
-          variant="body2"
-          sx={{
-            color: "#fff",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            fontWeight: "bold",
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{
-            color: "#aaa",
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            marginTop: 0.5,
-            width: "100%",
-          }}
-        >
+    <StyledBox>
+      <StyledCardMedia component="img" src={thumbnail} alt={title} />
+      <StyledTextBox>
+        <Typography variant="h6">{title}</Typography>
+        <Typography variant="body2" noWrap>
           {description}
         </Typography>
-      </Box>
-    </Box>
+      </StyledTextBox>
+    </StyledBox>
   );
 };
 

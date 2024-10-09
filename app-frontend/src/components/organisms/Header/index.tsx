@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { AppBar, Toolbar } from "@mui/material";
 import SearchBar from "@/components/molecules/SearchBar";
+import { StyledAppBar, StyledToolbar } from "./styles";
 
 interface HeaderProps {
   searchValue: string;
@@ -15,15 +15,15 @@ const Header: React.FC<HeaderProps> = ({
   onSearchSubmit,
 }) => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#0f0f0f" }}>
-      <Toolbar sx={{ justifyContent: "center" }}>
+    <StyledAppBar position="static">
+      <StyledToolbar>
         <SearchBar
           value={searchValue}
           onChange={onSearchChange}
           onSubmit={onSearchSubmit}
         />
-      </Toolbar>
-    </AppBar>
+      </StyledToolbar>
+    </StyledAppBar>
   );
 };
 
