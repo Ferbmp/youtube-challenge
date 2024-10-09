@@ -8,32 +8,80 @@
   "paths": {
     "/videos": {
       "get": {
-        "summary": "List all videos",
-        "description": "Retrieve all videos from cache and database, avoiding duplicates.",
+        "summary": "List all videos with pagination",
+        "description": "Retrieve paginated videos from cache and database, avoiding duplicates.",
         "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "type": "integer",
+            "example": 1
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of videos per page",
+            "required": false,
+            "type": "integer",
+            "example": 10
+          }
+        ],
         "responses": {
           "200": {
-            "description": "A list of videos",
+            "description": "A paginated list of videos",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "example": "F82uzV4PffM"
-                  },
-                  "url": {
-                    "type": "string",
-                    "example": "https://www.youtube.com/watch?v=F82uzV4PffM"
-                  },
-                  "title": {
-                    "type": "string",
-                    "example": "Sample Video Title"
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "example": "https://example.com/thumbnail.jpg"
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer",
+                  "example": 1
+                },
+                "per_page": {
+                  "type": "integer",
+                  "example": 10
+                },
+                "total_pages": {
+                  "type": "integer",
+                  "example": 5
+                },
+                "total_videos": {
+                  "type": "integer",
+                  "example": 50
+                },
+                "videos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "F82uzV4PffM"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://www.youtube.com/watch?v=F82uzV4PffM"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Sample Video Title"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "example": "https://example.com/thumbnail.jpg"
+                      },
+                      "description": {
+                        "type": "string",
+                        "example": "Sample description"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-10-08T12:34:56Z"
+                      }
+                    }
                   }
                 }
               }
@@ -87,6 +135,15 @@
                 "thumbnail": {
                   "type": "string",
                   "example": "https://example.com/thumbnail.jpg"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Sample description"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "example": "2024-10-08T12:34:56Z"
                 }
               }
             }
