@@ -5,3 +5,9 @@ export interface Video {
   thumbnail: string;
   description: string;
 }
+
+export interface VideoPage {
+  videos: Video[];
+  page: number;
+  total_pages: number;
+}
