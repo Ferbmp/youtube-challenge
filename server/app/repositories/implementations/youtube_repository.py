@@ -1,8 +1,11 @@
 import os
 import requests
 from typing import Optional, Dict
+from app.repositories.interfaces.external_video_interface import ExternalVideoInterface
 from app.utils.utils import extract_video_id
-class YouTubeService:
+ 
+
+class YouTubeRepository(ExternalVideoInterface):
     def __init__(self) -> None:
         self.api_key = os.getenv('YOUTUBE_API_KEY')
         self.base_url = "https://www.googleapis.com/youtube/v3/videos"
@@ -20,7 +23,6 @@ class YouTubeService:
 
         if response.status_code == 200:
             data = response.json()
-         
             if data['items']:
                 video = data['items'][0]['snippet']
                 video_info = {

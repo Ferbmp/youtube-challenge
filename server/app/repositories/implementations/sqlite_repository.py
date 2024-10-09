@@ -1,11 +1,11 @@
-from typing import Optional, List
-from .. import db
-from ..entities.video import Video
-from ..models.video_model import VideoModel
-from .repository_interface import RepositoryInterface
+from typing import Optional, List, Tuple, Set
+from app import db
+from ...entities.video import Video
+from ...models.video_model import VideoModel
+from ..interfaces.repository_interface import RepositoryInterface
 
 class SQLiteRepository(RepositoryInterface):
-    
+
     def add(self, video: Video) -> VideoModel:
         existing_video = db.session.get(VideoModel, video.id)
         if existing_video:
@@ -35,12 +35,15 @@ class SQLiteRepository(RepositoryInterface):
                 thumbnail=video_model.thumbnail,
                 description=video_model.description,   
                 created_at=video_model.created_at 
-                )
+            )
         return None
 
-    def get_all(self) -> List[Video]:
-        video_models = VideoModel.query.order_by(VideoModel.created_at.desc()).all()
-        return [
+    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Video], int]:
+        paginated_query = VideoModel.query.order_by(VideoModel.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
+        video_models = paginated_query.items
+        total_videos = paginated_query.total
+
+        paginated_videos = [
             Video(
                 id=video.id,
                 url=video.url,
@@ -51,11 +54,14 @@ class SQLiteRepository(RepositoryInterface):
             )
             for video in video_models
         ]
-    
-    def get_all_paginated(self, page: int, per_page: int):
-        videos_query = VideoModel.query.order_by(VideoModel.created_at.desc()).paginate(page=page, per_page=per_page, error_out=False)
-        video_models = videos_query.items
-        return [
+
+        return paginated_videos, total_videos
+
+    def get_videos_excluding_ids(self, exclude_ids: Set[str], offset: int, limit: int) -> List[Video]:
+        query = VideoModel.query.filter(~VideoModel.id.in_(exclude_ids)).order_by(VideoModel.created_at.desc())
+        video_models = query.offset(offset).limit(limit).all()
+
+        videos = [
             Video(
                 id=video.id,
                 url=video.url,
@@ -66,6 +72,11 @@ class SQLiteRepository(RepositoryInterface):
             )
             for video in video_models
         ]
+
+        return videos
+
+    def count_videos(self) -> int:
+        return VideoModel.query.count()
 
     def delete(self, video_id: str) -> bool:
         video_model = db.session.get(VideoModel, video_id)

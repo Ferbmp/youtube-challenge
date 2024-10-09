@@ -11,9 +11,9 @@ class RepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_all(self) -> List[Dict[str, str]]:
+    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Dict[str, str]], int]:
         pass
 
     @abstractmethod
-    def get_all_paginated(self, page: int, per_page: int) -> Tuple[List[Dict[str, str]], int]:
+    def delete(self, video_id: str) -> None:
         pass

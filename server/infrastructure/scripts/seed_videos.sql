@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS videos (
+    id TEXT PRIMARY KEY,
+    url TEXT NOT NULL,
+    title TEXT NOT NULL,
+    thumbnail TEXT,
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+ 
+INSERT INTO videos (id, url, title, thumbnail, description, created_at) VALUES
+('kXYiU_JCYtU', 'https://www.youtube.com/watch?v=kXYiU_JCYtU&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH', 'Numb (Official Music Video) [4K UPGRADE] – Linkin Park', 'https://i.ytimg.com/vi/kXYiU_JCYtU/hqdefault.jpg', 'Numb (Official Music Video) [4K UPGRADE] – Linkin Park\n----------\nFrom Zero | The New Album | Available November 15th\nPre-Order Now: https://lprk.co/fromzero\n\nOfficial Linkin Park Merch: http://lprk.co/store\nText/Call: https://lprk.co/text\nNewsletter Sign Up: https://lprk.co/newsletter\nYouTube Subscribe: http://lprk.co/youtube\nFacebook: http://lprk.co/facebook\nInstagram: http://lprk.co/instagram\nTikTok: http://lprk.co/tiktok\nTwitter: http://lprk.co/twitter\nDiscord: https://discord.gg/linkinpark\n\n#LinkinPark #Meteora #Lost #Meteora20', '2024-10-08 22:56:32.245100'),
+('8SbUC-UaAxE', 'https://www.youtube.com/watch?v=8SbUC-UaAxE&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=2', 'Guns N'' Roses - November Rain', 'https://i.ytimg.com/vi/8SbUC-UaAxE/hqdefault.jpg', 'Official Music Video for "November Rain" performed by Guns N'' Roses from their third studio album, ''Use Your Illusion I.'' Featured in Thor: Love and Thunder.\n\nSubscribe to Guns N'' Roses YouTube channel and never miss an update: https://GNR.lnk.to/YouTube\n\n#GunsNRoses #GnR #NovemberRain', '2024-10-08 22:56:36.852592'),
+('hTWKbfoikeg', 'https://www.youtube.com/watch?v=hTWKbfoikeg&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=3', 'Nirvana - Smells Like Teen Spirit (Official Music Video)', 'https://i.ytimg.com/vi/hTWKbfoikeg/hqdefault.jpg', 'Official Music Video for Smells Like Teen Spirit performed by Nirvana.\n\n#Nirvana #Breed #Nevermind', '2024-10-08 22:56:40.406799'),
+('eVTXPUF4Oz4', 'https://www.youtube.com/watch?v=eVTXPUF4Oz4&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=4', 'In The End [Official HD Music Video] - Linkin Park', 'https://i.ytimg.com/vi/eVTXPUF4Oz4/hqdefault.jpg', 'In The End [Official HD Music Video] - Linkin Park\n\n#LinkinPark #InTheEnd', '2024-10-08 22:56:45.493395'),
+('6NXnxTNIWkc', 'https://www.youtube.com/watch?v=6NXnxTNIWkc&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=5', '4 Non Blondes - What''s Up (Official Music Video)', 'https://i.ytimg.com/vi/6NXnxTNIWkc/hqdefault.jpg', 'CELEBRATING ONE BILLION VIEWS!! REMASTERED IN HD!\n\n#4NonBlones #WhatsUp', '2024-10-08 22:56:48.992470'),
+('fJ9rUzIMcZQ', 'https://www.youtube.com/watch?v=fJ9rUzIMcZQ&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=6', 'Queen – Bohemian Rhapsody (Official Video Remastered)', 'https://i.ytimg.com/vi/fJ9rUzIMcZQ/hqdefault.jpg', 'REMASTERED IN HD TO CELEBRATE ONE BILLION VIEWS!\n\n#QueenTheGreatest #BohemianRhapsody', '2024-10-08 22:56:53.231765'),
+('1w7OgIMMRc4', 'https://www.youtube.com/watch?v=1w7OgIMMRc4&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=7', 'Guns N'' Roses - Sweet Child O'' Mine (Official Music Video)', 'https://i.ytimg.com/vi/1w7OgIMMRc4/hqdefault.jpg', 'Official Music Video for "Sweet Child O'' Mine" by Guns N'' Roses as featured in Thor: Love and Thunder.\n\n#GunsNRoses #GnR', '2024-10-08 22:56:56.862276'),
+('bpOSxM0rNPM', 'https://www.youtube.com/watch?v=bpOSxM0rNPM&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=8', 'Arctic Monkeys - Do I Wanna Know? (Official Video)', 'https://i.ytimg.com/vi/bpOSxM0rNPM/hqdefault.jpg', 'Arctic Monkeys - ''Do I Wanna Know?'' from ''AM'', released 2013 on Domino Recording Co.\n\n#ArcticMonkeys #AM', '2024-10-08 22:57:01.048198'),
+('Soa3gO7tL-c', 'https://www.youtube.com/watch?v=Soa3gO7tL-c&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=9', 'Green Day - Boulevard Of Broken Dreams [Official Music Video]', 'https://i.ytimg.com/vi/Soa3gO7tL-c/hqdefault.jpg', 'Watch the official music video for Boulevard Of Broken Dreams by Green Day from the album American Idiot.\n\n#GreenDay #BoulevardOfBrokenDreams', '2024-10-08 22:57:04.739260'),
+('SJJI4TchE08', 'https://www.youtube.com/watch?v=SJJI4TchE08&list=PL_Q15fKxrBb7wo5SRxHbhk6ZL6zMYh5tH&index=10', 'Beartooth - "ATTN." (Official Music Video) | The Surface: Deluxe Edition', 'https://i.ytimg.com/vi/SJJI4TchE08/hqdefault.jpg', 'Beartooth - "ATTN." from ''The Surface: Deluxe Edition''.\n\n#Beartooth #ATTN', '2024-10-08 22:57:08.946762');
+
+
+-- sqlite3 instance/videos.db < infrastructure/scripts/seed_videos.sql

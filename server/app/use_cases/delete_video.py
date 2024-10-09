@@ -1,5 +1,5 @@
-from ..repositories.sqlite_repository import SQLiteRepository
-from ..repositories.redis_repository import RedisRepository
+from ..repositories.implementations.sqlite_repository import SQLiteRepository
+from ..repositories.implementations.redis_repository import RedisRepository
 from typing import Dict
 
 def delete_video(video_id: str, video_repository: SQLiteRepository, redis_repository: RedisRepository) -> Dict[str, str]:

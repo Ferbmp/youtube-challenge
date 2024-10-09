@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+    env_file:
+      - .env
+    volumes:
+      - ./server:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+
+  frontend:
+    build:
+      context: ./app-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app-frontend:/app
+    depends_on:
+      - backend

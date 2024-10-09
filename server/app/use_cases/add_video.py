@@ -1,15 +1,16 @@
 from typing import Tuple, Dict, Union
 from ..entities.video import Video
-from ..repositories.sqlite_repository import SQLiteRepository
-from ..repositories.redis_repository import RedisRepository
-from ..services.youtube_service import YouTubeService
+from ..repositories.implementations.sqlite_repository import SQLiteRepository
+from ..repositories.implementations.redis_repository import RedisRepository
+from ..repositories.implementations.youtube_repository import YouTubeRepository
+ 
 from app.utils.utils import extract_video_id
 from datetime import datetime, timezone
 
 def add_video(
     url: str, 
     video_repository: SQLiteRepository, 
-    youtube_service: YouTubeService, 
+    youtube_repository: YouTubeRepository, 
     redis_repository: RedisRepository
 ) -> Union[Dict[str, Union[str, int]], Tuple[Dict[str, str], int]]:
 
@@ -25,7 +26,7 @@ def add_video(
     if existing_video:
         return {"message": "Video already exists."} 
 
-    video_info = youtube_service.get_video_info(url)
+    video_info = youtube_repository.get_video_info(url)
     if video_info is None:
         return {"error": "Invalid YouTube URL or API response"}, 400
  
