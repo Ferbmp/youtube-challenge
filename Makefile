@@ -1,5 +1,5 @@
 DOCKER_COMPOSE = docker-compose
-RUN_SEED_FLAG = RUN_SEED
+
  
 build:
 	@echo "Building Docker images..."
@@ -13,11 +13,5 @@ up:
 down:
 	$(DOCKER_COMPOSE) down
  
-up-seed:
-	@echo "Starting the application and running seed..."
-	$(DOCKER_COMPOSE) up -d
-	$(DOCKER_COMPOSE) exec backend sh -c "export RUN_SEED=true && flask seed"
-	$(DOCKER_COMPOSE) restart backend
-
 seed:
 	sqlite3 server/instance/videos.db < server/infrastructure/scripts/seed_videos.sql
