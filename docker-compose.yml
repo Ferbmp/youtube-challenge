@@ -14,13 +14,6 @@ services:
       - ./server:/app
     depends_on:
       - redis
-    command: >
-      sh -c 'if [ "$$RUN_SEED" = "true" ]; then
-                echo "Rodando seed...";
-                sqlite3 /app/instance/videos.db ".read /app/infrastructure/scripts/seed_videos.sql";
-             fi &&
-             echo "Iniciando o servidor Flask..." &&
-             flask run --host=0.0.0.0'
 
   redis:
     image: "redis:alpine"
@@ -33,7 +26,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./view:/app
     depends_on:
       - backend

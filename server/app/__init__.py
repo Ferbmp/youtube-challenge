@@ -4,8 +4,6 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask_migrate import Migrate
 import redis
 from flask_cors import CORS
-import click
-import sqlite3
 import os
 
 db = SQLAlchemy()
@@ -25,10 +23,9 @@ def create_app(testing: bool = False):
     redis_host = os.getenv('REDIS_HOST', 'localhost')
 
     if testing:
-            redis_client = redis.Redis(host=redis_host, port=6379, db=1)
+        redis_client = redis.Redis(host=redis_host, port=6379, db=1)
     else:
-            redis_client = redis.Redis(host=redis_host, port=6379, db=0)
-
+        redis_client = redis.Redis(host=redis_host, port=6379, db=0)
 
     db.init_app(app)
 
@@ -52,15 +49,5 @@ def create_app(testing: bool = False):
 
     from .routes import main_routes
     app.register_blueprint(main_routes)
-
-    @app.cli.command("seed")
-    def seed():
-        conn = sqlite3.connect("instance/videos.db")
-        cursor = conn.cursor()
-        with open("infrastructure/scripts/seed_videos.sql", "r") as seed_file:
-            cursor.executescript(seed_file.read())
-        conn.commit()
-        conn.close()
-        click.echo("Seed executado com sucesso!")
 
     return app

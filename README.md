@@ -93,21 +93,37 @@ Para iniciar a aplicação (backend e frontend) sem rodar o seed de dados:
 make up
 ```
 
-Para iniciar a aplicação com a execução do seed de dados:
-
-```bash
-make up-seed
-```
-
 Para parar a aplicação:
 
 ```bash
 make down
 ```
 
+## Rodando o Seed de Dados (Opcional)
+
+Caso você queira popular o banco de dados com dados iniciais, siga as instruções abaixo para rodar o seed de dados manualmente.
+
+> **Importante:** Este passo não é obrigatório, mas pode ser útil para testar a aplicação com dados já preenchidos.
+
+1. Certifique-se de que o backend esteja configurado corretamente (dependências instaladas) e o banco de dados `videos.db` já tenha sido criado no diretório `server/instance/`.
+
+2. No diretório raiz do projeto, execute o comando abaixo para rodar o seed no banco de dados:
+
+   ```bash
+   make seed
+   ```
+
+   Esse comando irá ler o arquivo `seed_videos.sql` e popular o banco de dados com os dados iniciais.
+
+3. Agora, você pode iniciar o backend normalmente:
+
+   ```bash
+   python run.py
+   ```
+
 ## Estrutura do Projeto
 
 - **view/**: Diretório que contém o frontend da aplicação (Next.js).
 - **server/**: Diretório que contém o backend da aplicação (Python).
 - **docker-compose.yml**: Arquivo de configuração para os serviços Docker.
-- **Makefile**: Facilita a execução de comandos frequentes como `build`, `up`, `down` e `up-seed`.
+- **Makefile**: Facilita a execução de comandos frequentes como `build`, `up`, `down` e `seed`.
