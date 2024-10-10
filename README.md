@@ -12,6 +12,7 @@ Antes de começar, você precisará ter as seguintes ferramentas instaladas em s
 - [Docker](https://docker.com/) (não obrigatório, mas é recomendado e facilita a montagem do ambiente)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 - [Make](https://www.gnu.org/software/make/) (para facilitar o uso de comandos)
+- [Redis](https://redis.io/) (armazenamento em cache)
 
 Além disso, é recomendado utilizar um editor de código, como [VSCode](https://code.visualstudio.com/).
 
