@@ -2,7 +2,7 @@ import math
 from typing import List, Dict, Set, Any, TypedDict
 from app.repositories.implementations.redis_repository import RedisRepository
 from app.repositories.implementations.sqlite_repository import SQLiteRepository
-from app.entities.video import Video  
+from app.entities.video import Video
 
 class VideoDict(TypedDict):
     id: str
@@ -13,7 +13,6 @@ class VideoDict(TypedDict):
     created_at: str
 
 def add_videos_to_db(videos: List[VideoDict], sqlite_repo: SQLiteRepository):
- 
     for video_data in videos:
         try:
             video = Video(
@@ -42,27 +41,36 @@ def get_videos(
     
     total_videos: int = sqlite_repo.count_videos()
 
-    print(f"Vídeos no cache: {len(cached_videos)}")
-    print(f"Total de vídeos no banco: {total_videos}")
-    
-   
+
     if total_videos == 0 and len(cached_videos) > 0:
         print("Banco de dados vazio, sincronizando com o cache.")
         add_videos_to_db(cached_videos, sqlite_repo)
-        total_videos = sqlite_repo.count_videos()  
+        total_videos = sqlite_repo.count_videos()
 
     missing_videos_count = per_page - len(cached_videos)
 
+    offset = (page - 1) * per_page + len(cached_videos)
+    if total_videos <= offset:
+        total_pages = math.ceil(total_videos / per_page) if total_videos else 0
+        videos_list = cached_videos
+        videos_list.sort(key=lambda x: x['created_at'], reverse=True)
+        return {
+            "page": page,
+            "per_page": per_page,
+            "total_pages": total_pages,
+            "total_videos": total_videos,
+            "videos": videos_list
+        }
+
+
     if missing_videos_count > 0:
         cached_video_ids: Set[str] = {video['id'] for video in cached_videos}
-        offset = (page - 1) * per_page + len(cached_videos)
 
         videos_from_db = sqlite_repo.get_videos_excluding_ids(
             exclude_ids=cached_video_ids,
             offset=offset,
             limit=missing_videos_count
         )
-
 
         videos_from_db_data = [
             {
@@ -82,14 +90,13 @@ def get_videos(
             except Exception as e:
                 print(f"Erro ao adicionar vídeo ao cache: {e}")
 
-    
         videos_list = cached_videos + videos_from_db_data
-
         videos_list.sort(key=lambda x: x['created_at'], reverse=True)
     else:
-
         videos_list = cached_videos
+
     total_pages = math.ceil(total_videos / per_page) if total_videos else 0
+
     return {
         "page": page,
         "per_page": per_page,

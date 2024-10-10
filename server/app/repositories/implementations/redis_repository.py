@@ -2,7 +2,6 @@ import json
 from ..interfaces.repository_interface import RepositoryInterface
 from typing import Optional, Dict, List, Tuple
 from datetime import datetime, timezone
-from ...entities.video import Video
 
 class RedisRepository(RepositoryInterface):
     def __init__(self, redis_client, db_repository):
