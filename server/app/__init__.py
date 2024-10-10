@@ -6,6 +6,7 @@ import redis
 from flask_cors import CORS
 import click
 import sqlite3
+import os
 
 db = SQLAlchemy()
 
@@ -21,10 +22,13 @@ def create_app(testing: bool = False):
 
     global redis_client
 
+    redis_host = os.getenv('REDIS_HOST', 'localhost')
+
     if testing:
-        redis_client = redis.Redis(host='localhost', port=6379, db=1)
+            redis_client = redis.Redis(host=redis_host, port=6379, db=1)
     else:
-        redis_client = redis.Redis(host='redis', port=6379, db=0)
+            redis_client = redis.Redis(host=redis_host, port=6379, db=0)
+
 
     db.init_app(app)
 

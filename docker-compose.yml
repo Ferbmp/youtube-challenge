@@ -6,7 +6,8 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY} # Variável de ambiente da API do YouTube
+      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
+      - REDIS_HOST=redis
     env_file:
       - .env
     volumes:
@@ -28,11 +29,11 @@ services:
 
   frontend:
     build:
-      context: ./app-frontend
+      context: ./view
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./app-frontend:/app
+      - ./view:/app
     depends_on:
       - backend
