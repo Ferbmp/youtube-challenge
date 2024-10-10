@@ -56,7 +56,7 @@ O frontend estará disponível no endereço: `http://localhost:3000`.
 1. Navegue até o diretório do backend:
 
    ```bash
-   cd backend
+   cd server
    ```
 
 2. Crie um ambiente virtual (opcional, mas recomendado):
