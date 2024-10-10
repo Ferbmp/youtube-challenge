@@ -50,7 +50,12 @@ const VideoList: React.FC<VideoListProps> = ({
       <List>
         {Array.from(new Array(5)).map((_, index) => (
           <StyledListItem key={index} isSelected={false}>
-            <Skeleton variant="rectangular" width="100%" height={82} />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={82}
+              data-testid="skeleton"
+            />
           </StyledListItem>
         ))}
       </List>
@@ -99,6 +104,7 @@ const VideoList: React.FC<VideoListProps> = ({
         }}
       >
         <MenuItem
+          data-testid="remove-video"
           onClick={() => {
             if (selectedVideoId) {
               onVideoDelete(selectedVideoId);

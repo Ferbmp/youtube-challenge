@@ -12,11 +12,15 @@ interface VideoScreenProps {
 const VideoScreen: React.FC<VideoScreenProps> = ({ currentVideo }) => {
   return (
     <Box>
-      <VideoPlayer videoId={currentVideo?.id} />
-      <VideoDescription
-        title={currentVideo?.title}
-        description={currentVideo?.description}
-      />
+      {currentVideo && (
+        <>
+          <VideoPlayer videoId={currentVideo?.id} />
+          <VideoDescription
+            title={currentVideo?.title}
+            description={currentVideo?.description}
+          />
+        </>
+      )}
     </Box>
   );
 };

@@ -25,6 +25,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Playlist Viewer</title>
+
+        <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+        <link
+          rel="shortcut icon"
+          href="/assets/favicon.svg"
+          type="image/svg+xml"
+        />
+      </head>
       <body className={roboto.variable}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>

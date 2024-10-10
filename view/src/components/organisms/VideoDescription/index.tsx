@@ -20,7 +20,7 @@ const VideoDescription: React.FC<VideoDescriptionProps> = ({
   return (
     <StyledBox>
       <TitleTypography variant="h6">{title}</TitleTypography>
-      <Accordion>
+      <Accordion defaultExpanded={false}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
