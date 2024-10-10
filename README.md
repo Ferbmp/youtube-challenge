@@ -19,9 +19,6 @@ Além disso, é recomendado utilizar um editor de código, como [VSCode](https:/
 
 Este projeto requer uma chave de API do YouTube para funcionar. Adicione sua chave de API ao arquivo `.env` na raiz do projeto como exemplificado no arquivo `.env.example`
 
-### Subindo o Frontend (Next.js)
-
-
 ## Instalação
 
 ### Clonando o Repositório
@@ -32,6 +29,8 @@ Para iniciar o projeto, clone o repositório para um diretório de sua escolha:
 git clone https://github.com/Ferbmp/youtube-challenge
 cd youtube-challenge
 ```
+
+### Subindo o Frontend (Next.js)
 
 1. Navegue até o diretório do frontend:
 
