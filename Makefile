@@ -8,13 +8,13 @@ build:
  
 up:
 	@echo "Starting the application without running seed..."
-	$(DOCKER_COMPOSE) up 
+	$(DOCKER_COMPOSE) up -d
 
 down:
 	$(DOCKER_COMPOSE) down
  
 up-seed:
 	@echo "Starting the application and running seed..."
-	$(DOCKER_COMPOSE) up 
+	$(DOCKER_COMPOSE) up -d
 	$(DOCKER_COMPOSE) exec backend sh -c "export RUN_SEED=true && flask seed"
 	$(DOCKER_COMPOSE) restart backend

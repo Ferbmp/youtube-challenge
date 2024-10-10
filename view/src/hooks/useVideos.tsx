@@ -26,7 +26,6 @@ export const useVideos = () => {
     ({ pageParam = 1 }) => fetchVideos(pageParam),
     {
       getNextPageParam: (lastPage) => {
-        console.log(lastPage, "lastPage");
         if (lastPage.page < lastPage.total_pages) {
           return lastPage.page + 1;
         }
